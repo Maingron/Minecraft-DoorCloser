@@ -60,6 +60,17 @@ TrapDoorBlocks:
 - warped_trapdoor
 - crimson_trapdoor
 - mangrove_trapdoor
+- cherry_trapdoor
+- pale_oak_trapdoor
+- bamboo_trapdoor
+- copper_trapdoor
+- exposed_copper_trapdoor
+- weathered_copper_trapdoor
+- oxidized_copper_trapdoor
+- waxed_copper_trapdoor
+- waxed_exposed_copper_trapdoor
+- waxed_weathered_copper_trapdoor
+- waxed_oxidized_copper_trapdoor
 
 GateBlocks:
 - oak_fence_gate
@@ -71,6 +82,9 @@ GateBlocks:
 - warped_fence_gate
 - crimson_fence_gate
 - mangrove_fence_gate
+- cherry_fence_gate
+- pale_oak_fence_gate
+- bamboo_fence_gate
 
 DoorBlocks:
 - oak_door
@@ -82,3 +96,14 @@ DoorBlocks:
 - warped_door
 - crimson_door
 - mangrove_door
+- cherry_door
+- pale_oak_door
+- bamboo_door
+- copper_door
+- exposed_copper_door
+- weathered_copper_door
+- oxidized_copper_door
+- waxed_copper_door
+- waxed_exposed_copper_door
+- waxed_weathered_copper_door
+- waxed_oxidized_copper_door
