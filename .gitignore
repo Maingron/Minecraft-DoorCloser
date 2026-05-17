@@ -4,9 +4,3 @@ target/*
 .metadata/*
 .vscode/*
 .settings/*
-
-# Don't ignore these:
-!target/DoorCloser-*.jar
-
-# Ignore these:
-target/*proguard_base.jar
