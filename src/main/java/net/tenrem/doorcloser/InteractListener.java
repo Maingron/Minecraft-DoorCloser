@@ -61,6 +61,18 @@ public final class InteractListener implements Listener {
             // something that implements Openable (gate, trap door, door).
             if (blockData instanceof Openable) {
                 Player player = e.getPlayer();
+                Material blockDoorType = blockData.getMaterial();
+
+                if (blockData instanceof Door) {
+                    if (!Settings.doorsInScope.contains(blockDoorType)) return;
+                } else if (blockData instanceof TrapDoor) {
+                    if (!Settings.trapDoorsInScope.contains(blockDoorType)) return;
+                } else if (blockData instanceof Gate) {
+                    if (!Settings.gatesInScope.contains(blockDoorType)) return;
+                } else {
+                    // It's some other Openable we don't handle
+                    return;
+                }
 
                 // Get persistent lower left half of the double door or just lower half of a single door
                 if (blockData instanceof Door) {
@@ -74,7 +86,7 @@ public final class InteractListener implements Listener {
                         Door pairedDoor = DoorFromBlock(door2Block);
 
                         if (door2Block != null && pairedDoor != null) {
-                            if (((Door)blockData).isOpen()) {
+                            if (((Door) blockData).isOpen()) {
                                 CloseDoor(door2Block);
                             } else {
                                 OpenDoor(door2Block);
@@ -113,18 +125,16 @@ public final class InteractListener implements Listener {
                     return;
                 }
 
-                Material blockDoorType = blockData.getMaterial();
-
                 // check to see if it is a type of block we want to close. Note that
                 // we're not doing any type checking on these. I don't want to have to
                 // maintain a finite list of doors/gates that has to be updated with
                 // each version of Minecraft.
 
-                if (blockData instanceof TrapDoor && Settings.trapDoorsInScope.contains(blockDoorType)) {
+                if (blockData instanceof TrapDoor) {
                     activeScheduledTats.put(blockLocation, ScheduleClose(clickedBlock, null, blockLocation, Settings.secondsToRemainOpen));
-                } else if (blockData instanceof Gate && Settings.gatesInScope.contains(blockDoorType)) {
+                } else if (blockData instanceof Gate) {
                     activeScheduledTats.put(blockLocation, ScheduleClose(clickedBlock, null, blockLocation, Settings.secondsToRemainOpen));
-                } else if (blockData instanceof Door && Settings.doorsInScope.contains(blockDoorType)) {
+                } else if (blockData instanceof Door) {
                     activeScheduledTats.put(blockLocation, ScheduleClose(clickedBlock, pairedDoorBlock, blockLocation, Settings.secondsToRemainOpen));
                 }
             }
