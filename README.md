@@ -5,7 +5,14 @@
 - [DoorCloser on **SpigotMC**](https://www.spigotmc.org/resources/doorcloser.130704)
 - [DoorCloser on **GitHub**](https://github.com/Maingron/Minecraft-DoorCloser)
 
+## Feature List
+- Close (Revert) **doors**, **trapdoors** and **fence gates** automatically after player interaction
+- Sync **double-doors** (Opening one also opens the other)
+- Configurable: Allow ignoring functionality when **sneaking**, in **creative mode** or by granting **permission** `doorcloser.bypass`
+- Configurable: List of doors, trapdoors and fence gates affected by the plugin
+
 ## About DoorCloser
+
 Minecraft plugin to automatically close doors, gates and trap-doors that were opened by a player. The plugin also allows reverting the state instead of only closing, so if a door was closed before being opened by the player, it will be closed again when the timer runs out, and if it was open before, it will be opened again.
 
 You can configure which ones are in scope to be auto-closed, as well as if it should close when the player is in creative mode or is sneaking. I recommend leaving both of those as false to support using things like trap doors as decoration blocks (sides of chairs, etc.)
