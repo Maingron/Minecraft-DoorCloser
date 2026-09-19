@@ -1,4 +1,4 @@
-package net.tenrem.doorcloser;
+package com.maingron.doorcloser;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

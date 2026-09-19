@@ -1,4 +1,4 @@
-package net.tenrem.doorcloser;
+package com.maingron.doorcloser;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;

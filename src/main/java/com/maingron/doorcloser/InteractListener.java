@@ -1,4 +1,4 @@
-package net.tenrem.doorcloser;
+package com.maingron.doorcloser;
 
 import org.bukkit.block.data.*;
 import org.bukkit.entity.Player;
