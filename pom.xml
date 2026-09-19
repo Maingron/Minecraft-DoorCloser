@@ -24,6 +24,45 @@
                     <target>11</target> <!-- Java Version -->
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.6.0</version>  <!-- always check for latest -->
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <relocations>
+                                <relocation>
+                                    <pattern>com.cjcrafter.foliascheduler</pattern>
+                                    <shadedPattern>com.cjcrafter.foliascheduler</shadedPattern>
+                                </relocation>
+                            </relocations>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                        <exclude>META-INF/LICENSE*</exclude>
+                                        <exclude>META-INF/NOTICE*</exclude>
+                                        <exclude>com/cjcrafter/**/*EntityScheduler.class</exclude>
+                                        <exclude>com/cjcrafter/**/mappingio/format/**/*</exclude>
+                                        <exclude>com/cjcrafter/**/mappingio/**/*</exclude>
+                                        <exclude>com/cjcrafter/foliascheduler/reflectionremapper/**/*</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
@@ -52,6 +91,12 @@
             <artifactId>spigot-api</artifactId>
             <version>26.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.cjcrafter</groupId>
+            <artifactId>foliascheduler</artifactId>
+            <version>0.7.0</version>
         </dependency>
     </dependencies>
 

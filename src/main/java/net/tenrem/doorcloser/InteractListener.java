@@ -19,24 +19,31 @@ import org.bukkit.*;
 import org.bukkit.GameMode;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
+import com.cjcrafter.foliascheduler.FoliaCompatibility;
+import com.cjcrafter.foliascheduler.ServerImplementation;
+import com.cjcrafter.foliascheduler.TaskImplementation;
+
+
 import java.util.Map;
-import java.util.WeakHashMap;
+import java.util.HashMap;
 
 public final class InteractListener implements Listener {
     // this is a bukkit / minecraft constant. Put here only for clarity
     private static final int TICKS_PER_SECOND = 20;
 
     private final DoorCloserPlugin _plugin;
+    private final ServerImplementation scheduler;
+
+    public Map<Vector, TaskImplementation<Void>> activeScheduledTasks = new HashMap<>();
+    
 
     public InteractListener(DoorCloserPlugin plugin) {
         _plugin = plugin;
+        scheduler = new FoliaCompatibility(plugin).getServerImplementation();
     }
 
-    public Map<Vector, BukkitTask> activeScheduledTats = new WeakHashMap<>();
 
 
     // This is going to fire for every interaction, so need to exit it quickly if it's not what we want to handle
@@ -104,9 +111,9 @@ public final class InteractListener implements Listener {
 
                 Vector blockLocation = clickedBlock.getLocation().toVector();
 
-                if (activeScheduledTats.containsKey(blockLocation)) {
-                    activeScheduledTats.get(blockLocation).cancel();
-                    activeScheduledTats.remove(blockLocation);
+                if (activeScheduledTasks.containsKey(blockLocation)) {
+                    activeScheduledTasks.get(blockLocation).cancel();
+                    activeScheduledTasks.remove(blockLocation);
                     return;
                 }
 
@@ -131,11 +138,11 @@ public final class InteractListener implements Listener {
                 // each version of Minecraft.
 
                 if (blockData instanceof TrapDoor) {
-                    activeScheduledTats.put(blockLocation, ScheduleClose(clickedBlock, null, blockLocation, Settings.secondsToRemainOpen));
+                    activeScheduledTasks.put(blockLocation, ScheduleClose(clickedBlock, null, blockLocation, Settings.secondsToRemainOpen));
                 } else if (blockData instanceof Gate) {
-                    activeScheduledTats.put(blockLocation, ScheduleClose(clickedBlock, null, blockLocation, Settings.secondsToRemainOpen));
+                    activeScheduledTasks.put(blockLocation, ScheduleClose(clickedBlock, null, blockLocation, Settings.secondsToRemainOpen));
                 } else if (blockData instanceof Door) {
-                    activeScheduledTats.put(blockLocation, ScheduleClose(clickedBlock, pairedDoorBlock, blockLocation, Settings.secondsToRemainOpen));
+                    activeScheduledTasks.put(blockLocation, ScheduleClose(clickedBlock, pairedDoorBlock, blockLocation, Settings.secondsToRemainOpen));
                 }
             }
         }
@@ -189,53 +196,46 @@ public final class InteractListener implements Listener {
         }
     }
 
-    public BukkitTask ScheduleClose(Block door1Block, Block pairedDoorBlock, Vector blockLocation, float seconds) {
-        // Schedule the closing to happen at apx "seconds" seconds from now.
-        //_plugin.getLogger().info("DEBUG: Scheduled door close.");
-        return new BukkitRunnable() {
-            @Override
-            public void run() {
-                boolean closedFirstDoor = true;
-                if (door1Block != null) {
-                    Openable door1Data = OpenableFromBlock(door1Block);
+    public TaskImplementation<Void> ScheduleClose(Block door1Block, Block pairedDoorBlock, Vector blockLocation, float seconds) {
+        long delayTicks = Math.max(1L, (long) (seconds * TICKS_PER_SECOND));
 
-                    if (door1Data != null) {
-                        if (door1Data.isOpen()) {
-                            CloseDoor(door1Block);
-                            closedFirstDoor = true;
-                        } else {
-                            OpenDoor(door1Block);
-                            closedFirstDoor = false;
-                        }
-                        PlayCloseNoise(door1Block);
+        return scheduler.region(door1Block).runDelayed(task -> {
+            boolean closedFirstDoor = true;
+
+            if (door1Block != null) {
+                Openable door1Data = OpenableFromBlock(door1Block);
+                if (door1Data != null) {
+                    if (door1Data.isOpen()) {
+                        CloseDoor(door1Block);
+                        closedFirstDoor = true;
                     } else {
-                        _plugin.getLogger().warning("Tried to close door block, but block data was null or not correct type.");
+                        OpenDoor(door1Block);
+                        closedFirstDoor = false;
                     }
+                    PlayCloseNoise(door1Block);
                 } else {
-                    _plugin.getLogger().warning("Null main door block sent to ScheduleClose.");
+                    _plugin.getLogger().warning("Tried to close door block, but block data was null or not correct type.");
                 }
-
-                if (pairedDoorBlock != null) {
-                    Openable pairedDoorData = OpenableFromBlock(pairedDoorBlock);
-
-                    if (pairedDoorData != null) {
-                        if (closedFirstDoor) {
-                            CloseDoor(pairedDoorBlock);
-                        } else {
-                            OpenDoor(pairedDoorBlock);
-                        }
-                        PlayCloseNoise(pairedDoorBlock);
-                    } else {
-                        _plugin.getLogger().warning("Tried to close paired door block, but block data was null or not correct type.");
-                    }
-                } else {
-                    // this would typically be null for single doors, trap doors, etc.
-                    // do nothing
-                }
-
-                activeScheduledTats.remove(blockLocation);
+            } else {
+                _plugin.getLogger().warning("Null main door block sent to ScheduleClose.");
             }
-        }.runTaskLater(_plugin, (long)seconds * TICKS_PER_SECOND);
+
+            if (pairedDoorBlock != null) {
+                Openable pairedDoorData = OpenableFromBlock(pairedDoorBlock);
+
+                if (pairedDoorData != null) {
+                    if (closedFirstDoor) {
+                        CloseDoor(pairedDoorBlock);
+                    } else {
+                        OpenDoor(pairedDoorBlock);
+                    }
+                    PlayCloseNoise(pairedDoorBlock);
+                } else {
+                    _plugin.getLogger().warning("Tried to close paired door block, but block data was null or not correct type.");
+                }
+            }
+            activeScheduledTasks.remove(blockLocation);
+        }, delayTicks);
     }
 
 

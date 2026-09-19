@@ -1,6 +1,7 @@
 name: ${project.artifactId}
 main: net.tenrem.doorcloser.DoorCloserPlugin
 version: ${project.version}
+folia-supported: true
 api-version: 1.13
 authors: [Pete Brown 10rem.net, Maingron, Whitebrim]
 commands:
