@@ -1,9 +1,37 @@
-# Minecraft-DoorCloser
+<h1 align="center">Minecraft-DoorCloser </h1>
 
-## Links
-- [DoorCloser on **Modrinth**](https://modrinth.com/plugin/doorcloser2)
-- [DoorCloser on **SpigotMC**](https://www.spigotmc.org/resources/doorcloser.130704)
-- [DoorCloser on **GitHub**](https://github.com/Maingron/Minecraft-DoorCloser)
+<p align="center">
+<img align="center" src="logo.png">
+</p>
+
+<p align="center">
+<a href="https://modrinth.com/plugin/doorcloser2" title="DoorCloser on Modrinth">Modrinth</a>
+•
+<a href="https://www.spigotmc.org/resources/doorcloser.130704" title="DoorCloser on SpigotMC">SpigotMC</a>
+•
+<a href="https://hangar.papermc.io/Maingron/DoorCloser" title="DoorCloser on Hangar">Hangar</a>
+</p>
+<p align="center">
+<a href="https://github.com/Maingron/Minecraft-DoorCloser" title="DoorCloser on GitHub">GitHub</a>
+•
+<a href="https://gitlab.com/Maingron/Minecraft-DoorCloser" title="DoorCloser on GitLab">GitLab</a>
+</p>
+
+<h2 align="center">Supported Versions and Platforms</h2>
+<p align="center">
+1.13 - 26.3
+</p>
+<p align="center"> 
+<abbr title="1.13 - 26.3">Folia</abbr>
+•
+<abbr title="1.13 - 26.3">Purpur</abbr>
+•
+<abbr title="1.13 - 26.3">Paper</abbr>
+•
+<abbr title="1.13 - 26.3">SpigotMC</abbr>
+•
+<abbr title="1.13 - 26.3">CraftBukkit</abbr>
+</p>
 
 ## Feature List
 - Close (Revert) **doors**, **trapdoors** and **fence gates** automatically after player interaction
