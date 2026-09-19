@@ -8,8 +8,6 @@ public class DoorCloserPlugin extends JavaPlugin {
     public void onEnable() {
         Settings.ThisPlugin = this;
 
-        Settings.GetServerPlatform();
-
         Settings.ReadConfigValues();
 
         // set up commands
